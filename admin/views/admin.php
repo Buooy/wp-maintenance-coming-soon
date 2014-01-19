@@ -14,32 +14,58 @@
  * @package Wp_Mcs_Admin
  * @author    Aaron Lee <aaron.lee@buooy.com>
  */
-?>
 
-
-<?php
 Class Wp_Mcs_Admin_View{
 
-	private $tabs 		= array(
-								"General",
-								"Add Ons"
-							);
-	private $tabs_key	= array();
-
-	private $general_settings_key = 'my_general_settings';
-	private $advanced_settings_key = 'my_advanced_settings';
-
-	private $plugin_options_key = 'my_plugin_options';
-	private $plugin_settings_tabs = array();
-
+	private $plugin_url;
+	private $plugin_dir;
+	private $mcs_themes;
 
 	public function __construct(){
 		
-		foreach( $this->tabs as $tab ){
-			$this->tabs_key[ $this->clti( $tab ) ] = $tab;
-		}
+		$this->plugin_url = plugins_url('', dirname( dirname( __FILE__ ) ));
+		$this->plugin_dir = dirname( dirname( dirname(__FILE__) ) );
+		$this->mcs_themes = array();
 
-		add_action( 'admin_init', array( $this, 'register_settings_general' ) );
+		// Build the themes info
+		$this->build_themes_info();
+
+	}
+
+	// --------------------------------------------------------------------
+	// Builds the themes information
+	// --------------------------------------------------------------------
+	private function build_themes_info(){
+
+		$directories = glob($this->plugin_dir . '/themes/*' , GLOB_ONLYDIR);
+		foreach($directories as $directory){
+
+			// Get the folder name
+			$array 			= explode('/',$directory);
+			$folder_name 	= $array[count($array)-1];
+
+			$theme_info = array();
+
+			// Read the readme file
+			$theme_info_lines = file($directory.'/readme.txt', FILE_IGNORE_NEW_LINES);
+
+			foreach( $theme_info_lines as $theme_info_line ){
+				$theme_info_array = array();
+				$theme_info_array = explode(':', $theme_info_line);
+				$theme_info_array[0] = ltrim($theme_info_array[0]);
+				$theme_info_array[1] = ltrim($theme_info_array[1]);
+
+				if($theme_info_array[0] == 'Theme Screen'){
+					$theme_info[$theme_info_array[0]] = $this->plugin_url.'/themes'.'/'.$folder_name.'/'.$theme_info_array[1];
+				}
+				else{
+					$theme_info[$theme_info_array[0]] = $theme_info_array[1];
+				}
+			}
+			$theme_info['Theme ID'] = $folder_name;
+
+			array_push($this->mcs_themes, $theme_info);
+		}
 
 	}
 
@@ -52,63 +78,90 @@ Class Wp_Mcs_Admin_View{
 	// --------------------------------------------------------------------
 	public function display_page(){
 
-		$tab = isset( $_GET['tab'] ) ? $_GET['tab'] : $this->tabs[0];
-	    ?>
-	    <div class="wrap">
-	        <?php $this->display_tabs(); ?>
-	        <form method="post" action="options.php">
-	            <?php wp_nonce_field( 'update-options' ); ?>
-	            <?php settings_fields( $tab ); ?>
-	            <?php do_settings_sections( $tab ); ?>
-	            <?php submit_button(); ?>
-	        </form>
-	    </div>
-	    <?php
+		// variable names
+		$mode_types = array(
+						'deactivated'	=>	'Deactivated',
+						'maintenance'	=>	'Maintenance',
+						'comingsoon'	=>	'Coming Soon'
+						);
+		$wp_mcs_mode = 'wp_mcs_mode';
+		$wp_mcs_theme = 'wp_mcs_theme';
+
+		// options
+		$option_mode = get_option($wp_mcs_mode);
+		$option_theme = get_option($wp_mcs_theme);
+
+		// Create Admin
+		echo "<div class='wrap'>";
+
+			echo "<h2>Maintenance & Coming Soon</h2>";
+			echo "<form id='update-wp-mcs' action='' method='POST'>";
+
+				wp_nonce_field( 'update-wp-mcs' );
+				echo "<input type='hidden' name='action' value='wp_mcs'>";
+
+				echo "<div class='one_third'>";
+					
+					foreach($mode_types as $key=>$value){
+
+						if( ($option_mode == $key) || ( ($key=='deactivated') && (!in_array($option_mode, $mode_types, TRUE) ) ) ){
+							$selected = 'checked';
+						}
+
+						echo "<div class='mode'><input type='radio' name='wp-mcs-type' ".$selected." value='".$key."'> ".$value."</div>";
+
+						$selected = '';
+					}
+					
+				echo "</div>";
+
+
+				//	=============================================================
+				//	Settings
+				//	=============================================================
+				echo "<div class='two_third last'>";
+				
+					echo "<select id='wp-mcs-theme' name='wp-mcs-theme'>";
+
+						foreach($this->mcs_themes as $mcs_theme){
+							
+							if( $mcs_theme['Theme ID'] == $option_theme ){
+								$selected = 'selected';
+							}
+
+
+							echo "<option ".$selected;
+							echo " value='".$mcs_theme['Theme ID']."'";
+							echo " data-name='".$mcs_theme['Theme Name']."'";
+							echo " data-description='".$mcs_theme['Theme Description']."'";
+							echo " data-screen='".$mcs_theme['Theme Screen']."'";
+							echo ">";
+
+							echo $mcs_theme['Theme Name'];
+							echo "</option>";
+
+							$selected = '';
+						}
+					echo "</select>";
+
+
+					echo "<h3 id='theme_name'></h3>";
+					echo "<p id='theme_description'></p>";
+					echo "<br>";
+					echo "<div><img id='theme_screen' src=''></div>";
+
+				echo "</div>";
+
+
+				//	=============================================================
+				//	Save Changes
+				//	=============================================================
+				submit_button('Save Changes');
+
+			echo "</form>";
+
+		echo "</div><!-- wrap -->";
+
 	}
-
-	// --------------------------------------------------------------------
-	// Displays the different tabs
-	// --------------------------------------------------------------------
-	public function display_tabs(){
-		$current_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : $this->tabs[0];
-
-	    screen_icon();
-	    echo '<h2 class="nav-tab-wrapper">';
-	    foreach ( $this->tabs_key as $tab_key => $tab_caption ) {
-	        $active = $current_tab == $tab_key ? 'nav-tab-active' : '';
-	        echo '<a class="nav-tab ' . $active . '" href="?page=' . 'wp-mcs' . '&tab=' . $tab_key . '">' . $tab_caption . '</a>';
-	    }
-	    echo '</h2>';
-	}
-
-
-	// --------------------------------------------------------------------
-	// Registers The General Settings Tabs
-	// --------------------------------------------------------------------
-	public function register_settings_general(){
-	
-		$settings_key 		= 	'General';
-		$section_key		=	'section_general';
-		$section_heading	=	'General Plugin Settings';
-
-
-		register_setting( $settings_key, $settings_key );
-	    add_settings_section( $section_key, $section_heading, array( $this, 'section_general_callback' ), $settings_key );
-
-	    // Adds the settings field
-	    add_settings_field( 'general_option_logo', 'Add a Logo', array( $this, 'field_general_option_logo' ), $settings_key, $section_key );
-		
-	}
-	public function section_general_callback(){
-		echo "";
-	}
-	public function field_general_option_logo(){
-		$wp_mcs_options = get_option( 'wp-mcs-logo' );  
-	    ?>  
-	        <input type="text" id="logo_url" name="wp_mcs_options[logo]" value="<?php echo esc_url( $wp_mcs_options['logo'] ); ?>" />  
-	        <input id="upload_logo_button" type="button" class="button" value="<?php _e( 'Upload', 'wp_mcs' ); ?>" />  
-	        <span class="description"><?php _e('Upload an image for the logo', 'wp_mcs_options' ); ?></span>  
-	    <?php
-	} 
 }
 ?>

@@ -1,1 +1,35 @@
-/* This stylesheet is used to style the admin option form of the plugin. */
+#update-wp-mcs *{
+	vertical-align: middle;
+}
+.mode{
+	padding-bottom: 10px;
+}
+
+.one_third{
+	width: 31%;
+	margin: 0;
+	margin-right: 2% ;
+	outline: 0px solid black;
+	display: inline-block;
+}
+
+.two_third{
+	width: 64%;
+	margin: 0;
+	margin-right: 2%;
+	outline: 0px solid red;
+	display: inline-block;
+}
+.last{
+	margin-right: 0%;
+}
+
+
+@media all and (max-width: 800px){
+	.one_third, .two_third{
+		display:block;
+		width: 90%;
+		margin-right: 0%;
+		padding-top: 20px;
+	}
+}
