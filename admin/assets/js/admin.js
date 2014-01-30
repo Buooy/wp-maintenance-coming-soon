@@ -9,7 +9,11 @@
 			// Place your administration-specific JavaScript here
 			$.post(ajaxurl, $('form#update-wp-mcs').serialize(), function(response) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 				alert(response.msg);
+=======
+				alert('Got this from the server: ' + response.msg);
+>>>>>>> 88ff9fbb4e83328af51ce241103fecce2d0fc2e6
 =======
 				alert('Got this from the server: ' + response.msg);
 >>>>>>> 88ff9fbb4e83328af51ce241103fecce2d0fc2e6
@@ -19,6 +23,9 @@
 			}, 'json');
 		});
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 88ff9fbb4e83328af51ce241103fecce2d0fc2e6
 
 		// Changing the Theme
 		$('select#wp-mcs-theme').change(function(){
@@ -27,6 +34,7 @@
 
 	});
 
+<<<<<<< HEAD
 	// Update Options
 	function update_options(_this){
 		var option = _this.find(":selected");
@@ -74,6 +82,8 @@
 
 	});
 
+=======
+>>>>>>> 88ff9fbb4e83328af51ce241103fecce2d0fc2e6
 	function update_options(_this){
 		var option = _this.find(":selected");
 			

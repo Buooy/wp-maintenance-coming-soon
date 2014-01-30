@@ -215,16 +215,22 @@ class Wp_Mcs_Admin {
 		$wp_mcs_options = array(
 							'wp_mcs_mode' 	=> 	'wp-mcs-type',
 <<<<<<< HEAD
+<<<<<<< HEAD
 							'wp_mcs_theme' 	=>	'wp-mcs-theme',
 							'wp_mcs_redirect' 	=>	'wp-mcs-redirect'
 						);
 
 		$wp_mcs_types = array('deactivated','maintenance','comingsoon','redirect');
 =======
+=======
+>>>>>>> 88ff9fbb4e83328af51ce241103fecce2d0fc2e6
 							'wp_mcs_theme' 	=>	'wp-mcs-theme'
 						);
 
 		$wp_mcs_types = array('deactivated','maintenance','comingsoon');
+<<<<<<< HEAD
+>>>>>>> 88ff9fbb4e83328af51ce241103fecce2d0fc2e6
+=======
 >>>>>>> 88ff9fbb4e83328af51ce241103fecce2d0fc2e6
 		$return = 	array(
 						'status'	=>	'error',

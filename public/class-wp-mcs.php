@@ -289,6 +289,7 @@ class Wp_Mcs {
 				$file = 'coming-soon.php';
 			}
 <<<<<<< HEAD
+<<<<<<< HEAD
 			else if( $mode == 'redirect' ){
 				header('Location:'.get_option('wp_mcs_redirect'));	
 				die();
@@ -296,6 +297,11 @@ class Wp_Mcs {
 
 			if( !file_exists($folder.$file) ){
 				$folder = dirname( dirname( __FILE__ ) ).'/themes/_default/';
+=======
+
+			if( !file_exists($folder.$file) ){
+				$folder = dirname( dirname( __FILE__ ) ).'/themes/default/';
+>>>>>>> 88ff9fbb4e83328af51ce241103fecce2d0fc2e6
 =======
 
 			if( !file_exists($folder.$file) ){
