@@ -254,6 +254,12 @@ class Wp_Mcs {
 	 *
 	 */
 	public function display_mcs(){
+
+		// Check if the plugin is deactivated or not
+		$mode = get_option('wp_mcs_mode');
+
+		if( $mode == 'deactivated' ) die();
+
 		// To display the mcs or not
 		$is_authorized = false;
 
@@ -274,7 +280,31 @@ class Wp_Mcs {
 			nocache_headers();
 			if( defined( 'WPCACHEHOME' ) ) ob_end_clean();
 
-			include( dirname( dirname( __FILE__ ) ).'/themes/default/index.php' );
+			// Get the wp mcs mode
+			$theme = get_option('wp_mcs_theme');
+			$file = 'maintenance.php';
+
+			$folder = dirname( dirname( __FILE__ ) ).'/themes/'.$theme.'/';
+			if( $mode == 'comingsoon' ){
+				$file = 'coming-soon.php';
+			}
+<<<<<<< HEAD
+			else if( $mode == 'redirect' ){
+				header('Location:'.get_option('wp_mcs_redirect'));	
+				die();
+			}
+
+			if( !file_exists($folder.$file) ){
+				$folder = dirname( dirname( __FILE__ ) ).'/themes/_default/';
+=======
+
+			if( !file_exists($folder.$file) ){
+				$folder = dirname( dirname( __FILE__ ) ).'/themes/default/';
+>>>>>>> 88ff9fbb4e83328af51ce241103fecce2d0fc2e6
+			}
+			
+			include( $folder.$file );
+			
 			exit();
 		}
 

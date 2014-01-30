@@ -42,7 +42,7 @@ class Wp_Mcs_Admin {
 	 *
 	 * @since     1.0.0
 	 */
-	private function __construct() {
+	public function __construct() {
 
 		/*
 		 * @TODO :
@@ -69,11 +69,14 @@ class Wp_Mcs_Admin {
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
 
 		// Add the options page and menu item.
-		//add_action( 'admin_menu', array( $this, 'add_plugin_admin_menu' ) );
+		add_action( 'admin_menu', array( $this, 'add_plugin_admin_menu' ) );
 
 		// Add an action link pointing to the options page.
 		$plugin_basename = plugin_basename( plugin_dir_path( __DIR__ ) . $this->plugin_slug . '.php' );
 		add_filter( 'plugin_action_links_' . $plugin_basename, array( $this, 'add_action_links' ) );
+
+		// Add action ajax for admin page
+		add_action( 'wp_ajax_wp_mcs',  array($this,'wp_mcs_ajax_callback') );
 
 	}
 
@@ -122,7 +125,7 @@ class Wp_Mcs_Admin {
 
 		$screen = get_current_screen();
 		if ( $this->plugin_screen_hook_suffix == $screen->id ) {
-			wp_enqueue_style( $this->plugin_slug .'-admin-styles', plugins_url( 'assets/css/admin.css', __FILE__ ), array(), Wp_Mcs::VERSION );
+			wp_enqueue_style( $this->plugin_slug .'-admin-styles', plugins_url( 'assets/css/admin.css', __FILE__ ), array(), time() );
 		}
 
 	}
@@ -197,6 +200,60 @@ class Wp_Mcs_Admin {
 			$links
 		);
 
+	}
+
+	/**
+	 * Add Ajax Callbacks
+	 *
+	 *	wp-mcs-type: deactivated, maintenance, comingsoon
+	 *
+	 *
+	 */
+	public function wp_mcs_ajax_callback(){
+
+		// Option names
+		$wp_mcs_options = array(
+							'wp_mcs_mode' 	=> 	'wp-mcs-type',
+<<<<<<< HEAD
+							'wp_mcs_theme' 	=>	'wp-mcs-theme',
+							'wp_mcs_redirect' 	=>	'wp-mcs-redirect'
+						);
+
+		$wp_mcs_types = array('deactivated','maintenance','comingsoon','redirect');
+=======
+							'wp_mcs_theme' 	=>	'wp-mcs-theme'
+						);
+
+		$wp_mcs_types = array('deactivated','maintenance','comingsoon');
+>>>>>>> 88ff9fbb4e83328af51ce241103fecce2d0fc2e6
+		$return = 	array(
+						'status'	=>	'error',
+						'msg'		=>	'Oops. An error has occurred.',
+					);
+
+		// Verify WP NONCE
+		if( wp_verify_nonce( $_POST['_wpnonce'], 'update-wp-mcs' ) ){
+
+			if( !in_array( $_POST['wp-mcs-type'], $wp_mcs_types )  ){
+				$return['msg'] .= 'You did not insert a correct mode.';
+			}
+			else{
+
+				foreach( $wp_mcs_options as $key=>$value ){
+					update_option($key, $_POST[$value]);
+					$return['status'] = 'success';
+					$return['msg'] = 'The settings have been updated';
+				}
+
+			}
+
+		}
+		else{
+			$return['msg'] = '\r\nVerification has failed.';
+		}
+		
+		echo json_encode($return);
+		die();
 	}
 	
 
