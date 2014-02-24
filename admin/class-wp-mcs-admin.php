@@ -150,6 +150,16 @@ class Wp_Mcs_Admin {
 		$screen = get_current_screen();
 		if ( $this->plugin_screen_hook_suffix == $screen->id ) {
 			wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( 'assets/js/admin.js', __FILE__ ), array( 'jquery' ), Wp_Mcs::VERSION );
+			
+			wp_register_style( 'wp_mcs_datepicker_style', plugins_url( 'assets/css/smoothness/jquery-ui-1.10.4.custom.min.css"', __FILE__ ), false, false );
+			wp_enqueue_style( 'wp_mcs_datepicker_style' );
+			wp_enqueue_script( 'jquery-ui-datepicker' );
+
+			wp_register_style( 'wp_mcs_bootstrap_style', plugins_url( 'assets/css/bootstrap.min.css"', __FILE__ ), false, false );
+			wp_enqueue_style( 'wp_mcs_bootstrap_style' );
+
+			wp_register_script( 'wp_mcs_bootstrap_script', plugins_url( 'assets/js/bootstrap.min.js"', __FILE__ ), false, false );
+			wp_enqueue_script( 'wp_mcs_bootstrap_script' );
 		}
 
 	}
@@ -214,24 +224,13 @@ class Wp_Mcs_Admin {
 		// Option names
 		$wp_mcs_options = array(
 							'wp_mcs_mode' 	=> 	'wp-mcs-type',
-<<<<<<< HEAD
-<<<<<<< HEAD
 							'wp_mcs_theme' 	=>	'wp-mcs-theme',
-							'wp_mcs_redirect' 	=>	'wp-mcs-redirect'
+							'wp_mcs_redirect' 	=>	'wp-mcs-redirect',
+							'wp_mcs_deadline'	=>	'wp-mcs-deadline',
+							'wp_mcs_access_code'	=>	'wp-mcs-access-code',
 						);
 
 		$wp_mcs_types = array('deactivated','maintenance','comingsoon','redirect');
-=======
-=======
->>>>>>> 88ff9fbb4e83328af51ce241103fecce2d0fc2e6
-							'wp_mcs_theme' 	=>	'wp-mcs-theme'
-						);
-
-		$wp_mcs_types = array('deactivated','maintenance','comingsoon');
-<<<<<<< HEAD
->>>>>>> 88ff9fbb4e83328af51ce241103fecce2d0fc2e6
-=======
->>>>>>> 88ff9fbb4e83328af51ce241103fecce2d0fc2e6
 		$return = 	array(
 						'status'	=>	'error',
 						'msg'		=>	'Oops. An error has occurred.',

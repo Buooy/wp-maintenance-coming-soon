@@ -1,3 +1,3 @@
-Theme Name:			Standard Default
-Theme Description:	Standard Default Landing Page
-Theme Screen: 		screen.jpg
+Theme Name:			Default
+Theme Description:	Coming Soon Landing Page
+Theme Screen: 		screen.png

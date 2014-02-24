@@ -1,28 +1,17 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 /* Settings Page */
-#update-wp-mcs{
-	padding-top: 20px;
-}
 #settings-mode, #settings-option{
 	vertical-align:top;
 }
 #settings-option-redirect, #settings-option-theme{
 	display:none;
-=======
+}
 #update-wp-mcs *{
-	vertical-align: middle;
->>>>>>> 88ff9fbb4e83328af51ce241103fecce2d0fc2e6
-=======
-#update-wp-mcs *{
-	vertical-align: middle;
->>>>>>> 88ff9fbb4e83328af51ce241103fecce2d0fc2e6
+	vertical-align: top;
 }
 .mode{
+	vertical-align: middle !important;
 	padding-bottom: 10px;
 }
-<<<<<<< HEAD
-<<<<<<< HEAD
 #wp-mcs-redirect{
 	min-width: 200px;
 }
@@ -40,45 +29,4 @@
 	-webkit-box-shadow: 3px 3px 3px 0px rgba(0, 0, 0, 0.25);
 	-moz-box-shadow:    3px 3px 3px 0px rgba(0, 0, 0, 0.25);
 	box-shadow:         3px 3px 3px 0px rgba(0, 0, 0, 0.25);
-}
-
-/* Styling Standards */
-.text-center{
-	text-align:center;
-}
-
-/* Columns */
-=======
-
->>>>>>> 88ff9fbb4e83328af51ce241103fecce2d0fc2e6
-=======
-
->>>>>>> 88ff9fbb4e83328af51ce241103fecce2d0fc2e6
-.one_third{
-	width: 31%;
-	margin: 0;
-	margin-right: 2% ;
-	outline: 0px solid black;
-	display: inline-block;
-}
-
-.two_third{
-	width: 64%;
-	margin: 0;
-	margin-right: 2%;
-	outline: 0px solid red;
-	display: inline-block;
-}
-.last{
-	margin-right: 0%;
-}
-
-
-@media all and (max-width: 800px){
-	.one_third, .two_third{
-		display:block;
-		width: 90%;
-		margin-right: 0%;
-		padding-top: 20px;
-	}
 }

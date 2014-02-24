@@ -8,24 +8,11 @@
 			e.preventDefault();
 			// Place your administration-specific JavaScript here
 			$.post(ajaxurl, $('form#update-wp-mcs').serialize(), function(response) {
-<<<<<<< HEAD
-<<<<<<< HEAD
-				alert(response.msg);
-=======
-				alert('Got this from the server: ' + response.msg);
->>>>>>> 88ff9fbb4e83328af51ce241103fecce2d0fc2e6
-=======
-				alert('Got this from the server: ' + response.msg);
->>>>>>> 88ff9fbb4e83328af51ce241103fecce2d0fc2e6
 				if( response.status == 'success' ){
 					location.reload();
 				}
 			}, 'json');
 		});
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 88ff9fbb4e83328af51ce241103fecce2d0fc2e6
 
 		// Changing the Theme
 		$('select#wp-mcs-theme').change(function(){
@@ -34,7 +21,6 @@
 
 	});
 
-<<<<<<< HEAD
 	// Update Options
 	function update_options(_this){
 		var option = _this.find(":selected");
@@ -51,10 +37,16 @@
 	}
 	// Change Display of settings option
 	function change_settings_option(){
-		if( $('input[type=radio][name=wp-mcs-type]:checked').val() != 'redirect' ){
+
+		var checked_option = $('input[type=radio][name=wp-mcs-type]:checked');
+		if( checked_option.val() != 'redirect' && checked_option.val() != 'deactivated' ){
 			$('#settings-option-redirect').fadeOut('fast', function(){
 				$('#settings-option-theme').fadeIn('fast');
 			});
+		}
+		else if( checked_option.val() == 'deactivated' ){
+			$('#settings-option-redirect').fadeOut('fast');
+			$('#settings-option-theme').fadeOut('fast');
 		}
 		else{
 			$('#settings-option-theme').fadeOut('fast', function(){
@@ -72,18 +64,16 @@
 		$('input[type=radio][name=wp-mcs-type]').click(function(){
 			change_settings_option();
 		});
-=======
->>>>>>> 88ff9fbb4e83328af51ce241103fecce2d0fc2e6
 
 		// Changing the Theme
 		$('select#wp-mcs-theme').change(function(){
 			update_options($('select#wp-mcs-theme'));
 		});
 
-	});
+		// Datepicker
+		$('#datepicker').datepicker();
 
-=======
->>>>>>> 88ff9fbb4e83328af51ce241103fecce2d0fc2e6
+	});
 	function update_options(_this){
 		var option = _this.find(":selected");
 			
